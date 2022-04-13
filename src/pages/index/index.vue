@@ -63,6 +63,7 @@
 		},
 		onLoad(options) {
 			// console.log(this.$u.config.v);
+			console.log(options)
 			let {productId} = options;
 			this.productId = productId;
 
