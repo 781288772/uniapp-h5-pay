@@ -19,7 +19,7 @@
 			<view class="flex_bt" @click="handleSelectPayType(0)" style="margin-top: 0.9em;">
 				<view class="flex_st">
 					<image src="../../static/wx.png" mode="" style="width: 1.4rem;height: 1.4rem;"></image>
-						<text style="margin-left: 0.5rem;">微信</text>
+						<text style="margin-left: 0.5rem;font-size: 1rem;">微信</text>
 				</view>
 				<view>
 					<image src="../../static/selected.png" mode="" style="width: 0.8rem;height: 0.8rem;" v-if="payType==0"></image>
@@ -30,7 +30,7 @@
 			<view class="flex_bt" style="margin-top: 0.9rem;" @click="handleSelectPayType(1)">
 				<view class="flex_st">
 					<image src="../../static/zfb.png" mode="" style="width: 1.4rem;height: 1.4rem;"></image>
-						<text style="margin-left: 0.5rem;">支付宝</text>
+						<text style="margin-left: 0.5rem;font-size: 1rem;">支付宝</text>
 				</view>
 				<view>
 					<image src="../../static/selected.png" mode="" style="width: 0.8rem;height:0.8rem" v-if="payType==1"></image>
@@ -157,7 +157,7 @@
 	}
 </script>
 
-<style>
+<style lang="scss" scoped>
 	.content {
 		background-color: #F4F4F4;
 		width: 100%;
@@ -182,14 +182,15 @@
 
 	}
 	.title{
-		width: 3.2rem;
+		// width: 3.2rem;
 		padding: 0.5rem 0;
-		height: 1.1rem;
+		// height: 1.1rem;
 		font-size: 0.8rem;
 		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 500;
 		color: #000000;
 		white-space: nowrap;
+		text-align: left;
 	}
 	.flex_bt{
 		display: flex;
