@@ -88,6 +88,8 @@
 			},
 			handlePay() {
 				let that = this;
+				this.$u.route('pages/index/success')
+				return;
 				uni.request({
 					url: apiUrl + `api/payOrder/alipay/toPay`,
 					method: 'POST', 
