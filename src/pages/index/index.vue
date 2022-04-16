@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-			<u-navbar back-text="" title="购买影片"></u-navbar>
+			<u-navbar :custom-back="customBack" back-text="" title="购买影片111"></u-navbar>
 		<view class="media flex_st" style="align-items: center;">
 			<view>
 				<image src="../../static/ic_share_logo.png" mode="" style="width: 4.9rem;height: 4.9rem;"></image>
@@ -69,6 +69,14 @@
 
 		},
 		methods: {
+			customBack(){
+				uni.showToast({
+					title:'调用返回',
+					icon:'none'
+				})
+				 window.webkit.messageHandlers.HQSJback.postMessage(null);
+				  // window.location.href = "HQSJback://back"
+			},
 			pay(){
 				if(this.payType==0){
 					console.log('微信支付')
@@ -88,13 +96,13 @@
 			},
 			handlePay() {
 				let that = this;
-				this.$u.route('pages/index/success')
-				return;
+				// this.$u.route('pages/index/success')
+				// return;
 				uni.request({
 					url: apiUrl + `api/payOrder/alipay/toPay`,
 					method: 'POST', 
 					data: {
-						"productId": this.productId||'1509778324908523521',
+						"productId": this.productId,
 						"productType": "ALBUM_VIDEO",
 						"channel": "H5"
 					},
@@ -104,15 +112,23 @@
 					},
 					success: function(res) {
 						console.log('请求封装接口成功', res)
-						that.src = res.data.result.result
-						console.log(that.src)
+						if(res.data.code!=200){
+							return uni.showToast({
+								title:res.data.message,
+								icon:'none',
+							})
+						}
+						// that.src = res.data.result.result
+						// console.log(that.src)
 						// uni.navigateTo({
 						// 	url:`/pages/web/webview?src=${res.data.result.result}`
 						// })
+			
 						const div = document.createElement('div');
 						div.innerHTML = res.data.result.result;
 						document.body.appendChild(div);
 						document.forms[0].submit();
+						
 
 					},
 					fail: function(res) {
