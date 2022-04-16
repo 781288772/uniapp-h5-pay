@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-			<u-navbar back-text="" title="支付成功"></u-navbar>
+			<u-navbar :custom-back="customBack" back-text="" title="支付成功"></u-navbar>
 			<view>
 				<image src="../../static/success.png" mode="" style="width: 4rem;height: 4rem;"></image>
 				<view class="unlock">影片已解锁</view>
@@ -44,11 +44,20 @@
 			console.log(options)
 			let {productId} = options;
 			this.productId = productId;
+			window.webkit.messageHandlers.HQSJbuySucess.postMessage(null);
 
 		},
 		methods: {
+			customBack(){
+				// uni.showToast({
+				// 	title:'调用返回',
+				// 	icon:'none'
+				// })
+				 window.webkit.messageHandlers.HQSJback.postMessage(null);
+				  // window.location.href = "HQSJback://back"
+			},
 			navToWatch(){
-				
+				 window.webkit.messageHandlers.HQSwatchNow.postMessage(null);
 			}
 			}
 			

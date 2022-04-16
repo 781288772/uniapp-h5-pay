@@ -78,10 +78,10 @@
 		},
 		methods: {
 			customBack(){
-				uni.showToast({
-					title:'调用返回',
-					icon:'none'
-				})
+				// uni.showToast({
+				// 	title:'调用返回',
+				// 	icon:'none'
+				// })
 				 window.webkit.messageHandlers.HQSJback.postMessage(null);
 				  // window.location.href = "HQSJback://back"
 			},
