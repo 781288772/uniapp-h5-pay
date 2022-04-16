@@ -1,14 +1,14 @@
 <template>
 	<view class="content">
-			<u-navbar :custom-back="customBack" back-text="" title="购买影片111"></u-navbar>
+			<u-navbar :custom-back="customBack" back-text="" title="购买影片"></u-navbar>
 		<view class="media flex_st" style="align-items: center;">
 			<view>
-				<image src="../../static/ic_share_logo.png" mode="" style="width: 4.9rem;height: 4.9rem;"></image>
+				<image :src="cover||'../../static/ic_share_logo.png'" mode="" style="width: 4.9rem;height: 4.9rem;"></image>
 			</view>
 			<view style="display: flex;flex-direction: column;text-align: left;margin-left: 1rem;justify-content: space-between;height:4.9rem;">
-				<view style="font-size: 1rem;font-weight: 500;">《熊出没 · 重返地球》</view>
+				<view style="font-size: 1rem;font-weight: 500;">{{title}}</view>
 				<view style="color: #A6A5A5;font-size: 1.3rem">在线观影</view>
-				<view style="color: #FF6F4E;font-size: 1.3rem">￥9.9</view>
+				<view style="color: #FF6F4E;font-size: 1.3rem">￥{{price}}</view>
 			</view>
 			
 		</view>
@@ -56,16 +56,24 @@
 	export default {
 		data() {
 			return {
-				title: '支付宝支付',
-				src:'',
+			
 				payType:'',
+				title: '',
+				cover:'',
+				price:0.00,
+				
+				
+				
 			}
 		},
 		onLoad(options) {
 			// console.log(this.$u.config.v);
 			console.log(options)
-			let {productId} = options;
+			let {productId,title,cover,price} = options;
 			this.productId = productId;
+			this.title = title;
+			this.cover = cover;
+			this.price = price;
 
 		},
 		methods: {
