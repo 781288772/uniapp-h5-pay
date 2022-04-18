@@ -1,16 +1,18 @@
 <template>
 	<view class="content">
-			<u-navbar :custom-back="customBack" back-text="" title="购买影片"></u-navbar>
+		<u-navbar :custom-back="customBack" back-text="" title="购买影片"></u-navbar>
 		<view class="media flex_st" style="align-items: center;">
 			<view>
-				<image :src="cover||'../../static/ic_share_logo.png'" mode="" style="width: 4.9rem;height: 4.9rem;"></image>
+				<image :src="cover||'../../static/ic_share_logo.png'" mode="" style="width: 4.9rem;height: 4.9rem;">
+				</image>
 			</view>
-			<view style="display: flex;flex-direction: column;text-align: left;margin-left: 1rem;justify-content: space-between;height:4.9rem;">
+			<view
+				style="display: flex;flex-direction: column;text-align: left;margin-left: 1rem;justify-content: space-between;height:4.9rem;">
 				<view style="font-size: 1rem;font-weight: 500;">{{title}}</view>
 				<view style="color: #A6A5A5;font-size: 1.3rem">在线观影</view>
 				<view style="color: #FF6F4E;font-size: 1.3rem">￥{{price}}</view>
 			</view>
-			
+
 		</view>
 		<view class="payType">
 			<view class="title">
@@ -19,88 +21,134 @@
 			<view class="flex_bt" @click="handleSelectPayType(0)" style="margin-top: 0.9em;">
 				<view class="flex_st">
 					<image src="../../static/wx.png" mode="" style="width: 1.4rem;height: 1.4rem;"></image>
-						<text style="margin-left: 0.5rem;font-size: 1rem;">微信</text>
+					<text style="margin-left: 0.5rem;font-size: 1rem;">微信</text>
 				</view>
 				<view>
-					<image src="../../static/selected.png" mode="" style="width: 0.8rem;height: 0.8rem;" v-if="payType==0"></image>
-					<image src="../../static/unselected.png" mode="" style="width: 0.8rem;height: 0.8rem" v-else></image>
+					<image src="../../static/selected.png" mode="" style="width: 0.8rem;height: 0.8rem;"
+						v-if="payType==0"></image>
+					<image src="../../static/unselected.png" mode="" style="width: 0.8rem;height: 0.8rem" v-else>
+					</image>
 				</view>
 			</view>
 			<!-- 支付宝 -->
 			<view class="flex_bt" style="margin-top: 0.9rem;" @click="handleSelectPayType(1)">
 				<view class="flex_st">
 					<image src="../../static/zfb.png" mode="" style="width: 1.4rem;height: 1.4rem;"></image>
-						<text style="margin-left: 0.5rem;font-size: 1rem;">支付宝</text>
+					<text style="margin-left: 0.5rem;font-size: 1rem;">支付宝</text>
 				</view>
 				<view>
-					<image src="../../static/selected.png" mode="" style="width: 0.8rem;height:0.8rem" v-if="payType==1"></image>
-					<image src="../../static/unselected.png" mode="" style="width: 0.8rem;height: 0.8rem" v-else></image>
+					<image src="../../static/selected.png" mode="" style="width: 0.8rem;height:0.8rem"
+						v-if="payType==1"></image>
+					<image src="../../static/unselected.png" mode="" style="width: 0.8rem;height: 0.8rem" v-else>
+					</image>
 				</view>
 			</view>
-			
+
 		</view>
-	<view style="text-align: center;position: relative;margin-top: 1.4rem;" @click="pay">
-				<image src="../../static/btn_bg@2x.png" mode="widthFix"></image>
-				<view style="position: absolute;left: 50%;top: 50%;transform: translate(-50%,-65%);">立即支付</view>
-	</view>
+		<view style="text-align: center;position: relative;margin-top: 1.4rem;" @click="pay">
+			<image src="../../static/btn_bg@2x.png" mode="widthFix"></image>
+			<view style="position: absolute;left: 50%;top: 50%;transform: translate(-50%,-65%);">立即支付</view>
+		</view>
 	</view>
 </template>
 
 <script>
 	import config from '../../utils/config.js'
-	let apiUrl = config.api.baseUrl
+	let apiUrl = config.api.baseUrl;
+	let imgUrl = config.api.imageBaseUrl;
 	import {
 		pay,
-		aliPay
+		aliPay,
+		queryInfo
 	} from "@/api/index.js"
 	export default {
 		data() {
 			return {
-			
-				payType:'',
+
+				payType: '',
 				title: '',
-				cover:'',
-				price:0.00,
-				
-				
-				
+				cover: '',
+				price: 0.00,
+				token:'',
+
+
+
 			}
 		},
 		onLoad(options) {
 			// console.log(this.$u.config.v);
 			console.log(options)
-			let {productId,title,cover,price} = options;
+			let {
+				productId,
+				token
+			} = options;
+			// productId= '1319571973050785793'
 			this.productId = productId;
-			this.title = title;
-			this.cover = cover;
-			this.price = price;
+			this.token = token
+			let _this = this;
+			uni.request({
+				url: apiUrl + `/api/content/video/queryInfo?id=${productId}`,
+				method: 'GET',
+				header: {
+					'X-Access-Token': this.token,
+					'content-type': 'application/json',
+				},
+				success: function(res) {
+					console.log('请求封装接口成功', res)
+					if (res.data.code != 200) {
+						return uni.showToast({
+							title: res.data.message,
+							icon: 'none',
+						})
+					}
+					_this.title = res.data.result.name;
+					_this.cover =  imgUrl+res.data.result.coverHome;	
+					_this.price = res.data.result.chargeAmount;
+			
+	
+			
+			
+				},
+				fail: function(res) {
+					console.log('请求接口失败', res)
+			
+				}
+			});
+			// queryInfo(productId).then(res=>{
+			// 	this.title = res.result.name;
+			// 	this.cover =  imgUrl+res.result.coverHome;	
+			// 	this.price = res.result.chargeAmount;
+			// })
+			
+			
+		
 
 		},
 		methods: {
-			customBack(){
+			customBack() {
 				// uni.showToast({
 				// 	title:'调用返回',
 				// 	icon:'none'
 				// })
-				 window.webkit.messageHandlers.HQSJback.postMessage(null);
-				  // window.location.href = "HQSJback://back"
+				window.webkit.messageHandlers.HQSJback.postMessage(null);
+				// window.location.href = "HQSJback://back"
 			},
-			pay(){
-				if(this.payType==0){
+			pay() {
+				if (this.payType == 0) {
 					console.log('微信支付')
 					uni.showToast({
-						title:'暂不支持',
-						icon:'none'
+						title: '暂不支持',
+						icon: 'none'
 					})
-				}else{
-						console.log('支付宝支付')
-						this.handlePay();
+				} else {
+					console.log('支付宝支付')
+					this.handlePay();
 				}
 			},
-			handleSelectPayType(flag){
+			handleSelectPayType(flag) {
 				this.payType = flag;
 
-				
+
 			},
 			handlePay() {
 				let that = this;
@@ -108,40 +156,36 @@
 				// return;
 				uni.request({
 					url: apiUrl + `api/payOrder/alipay/toPay`,
-					method: 'POST', 
+					method: 'POST',
 					data: {
 						"productId": this.productId,
 						"productType": "ALBUM_VIDEO",
 						"channel": "H5"
 					},
 					header: {
-						'X-Access-Token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDk4MTQwMzEsInVzZXJuYW1lIjoiMTgzMjA2Njk3MzMifQ.QuWh975DdBQdnfNoJC-GrX6OsXRlpVE5IyCTKvJXSGI',
+						'X-Access-Token': this.token,
 						'content-type': 'application/json',
 					},
 					success: function(res) {
 						console.log('请求封装接口成功', res)
-						if(res.data.code!=200){
+						if (res.data.code != 200) {
 							return uni.showToast({
-								title:res.data.message,
-								icon:'none',
+								title: res.data.message,
+								icon: 'none',
 							})
 						}
-						// that.src = res.data.result.result
-						// console.log(that.src)
-						// uni.navigateTo({
-						// 	url:`/pages/web/webview?src=${res.data.result.result}`
-						// })
-			
+
+
 						const div = document.createElement('div');
 						div.innerHTML = res.data.result.result;
 						document.body.appendChild(div);
 						document.forms[0].submit();
-						
+
 
 					},
 					fail: function(res) {
 						console.log('请求接口失败', res)
-				
+
 					}
 				});
 				// aliPay().then(res=>{
@@ -192,14 +236,15 @@
 		box-sizing: border-box;
 	}
 
-	.media{
+	.media {
 		padding: 0.5rem;
 		background: #fff;
 		border-radius: 0.25rem;
 		height: 7rem;
 		/* border: 1px solid red; */
 	}
-	.payType{
+
+	.payType {
 		margin-top: 0.5rem;
 		padding: 0.5rem;
 		background: #fff;
@@ -207,7 +252,8 @@
 		height: 7.6rem;
 
 	}
-	.title{
+
+	.title {
 		// width: 3.2rem;
 		padding: 0.5rem 0;
 		// height: 1.1rem;
@@ -218,19 +264,22 @@
 		white-space: nowrap;
 		text-align: left;
 	}
-	.flex_bt{
+
+	.flex_bt {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 	}
-	.flex_ar{
+
+	.flex_ar {
 		display: flex;
 		justify-content: space-around;
 		align-items: center;
 	}
-	.flex_st{
+
+	.flex_st {
 		display: flex;
 		justify-content: flex-start;
-	
+
 	}
 </style>

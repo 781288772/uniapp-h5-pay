@@ -17,6 +17,10 @@ export async function pay(payType) {
 		"productType": "ALBUM_VIDEO"
 	});
 }
+
+export async function queryInfo(id) {
+	return request.get(`/api/content/video/queryInfo?id=${id}`);
+}
 //首页数据
 export async function indexHome(params) {
 	return request.get("/api/content/home/list", params);

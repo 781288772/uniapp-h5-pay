@@ -6,8 +6,8 @@ export default {
 	 // http://hqsjtest-api.fangte.com:6089/api/'
 	 baseUrl:'http://hqsjtest.fangte.com:6089/',
 	 
-	 imageBaseUrl:"https://hqsjapp-1251510006.cos.ap-shanghai.myqcloud.com/",
-   // imageBaseUrl:"https://hqsjapptest-1251510006.cos.ap-shanghai.myqcloud.com/",
+	 // imageBaseUrl:"https://hqsjapp-1251510006.cos.ap-shanghai.myqcloud.com/",
+   imageBaseUrl:"https://hqsjapptest-1251510006.cos.ap-shanghai.myqcloud.com/",
   },
   storageKeys: {
     authorityKey: 'Authority',
