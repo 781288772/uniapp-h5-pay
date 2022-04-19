@@ -47,13 +47,10 @@
 			console.log(options)
 			// let {productId} = options;
 			// this.productId = productId;
-			
-
-				let productId = uni.getStorageSync('id');
-				
+			let {out_trade_no} = options
 				let _this = this;
 				uni.request({
-					url: apiUrl + `/api/content/video/queryInfo?id=${productId}`,
+					url: apiUrl + `/api/payOrder/queryOrderStatus?outTradeNo=PAY-202204192232550357`,
 					method: 'GET',
 					header: {
 						'X-Access-Token': '',
