@@ -137,13 +137,14 @@
 			pay() {
 				if (this.payType == 0) {
 					console.log('微信支付')
-					uni.showToast({
-						title: '暂不支持',
-						icon: 'none'
-					})
+					// uni.showToast({
+					// 	title: '暂不支持',
+					// 	icon: 'none'
+					// })
+						this.handlePay('wechat');
 				} else {
 					console.log('支付宝支付')
-					this.handlePay();
+					this.handlePay('alipay');
 				}
 			},
 			handleSelectPayType(flag) {
@@ -151,12 +152,13 @@
 
 
 			},
-			handlePay() {
+			handlePay(platform) {
+				//alipay
 				let that = this;
 				// this.$u.route('pages/index/success')
 				// return;
 				uni.request({
-					url: apiUrl + `api/payOrder/alipay/toPay`,
+					url: apiUrl + `api/payOrder/${platform}/toPay`,
 					method: 'POST',
 					data: {
 						"productId": this.productId,
@@ -175,13 +177,18 @@
 								icon: 'none',
 							})
 						}
-
-
+						
+					if(platform=='alipay'){
 						const div = document.createElement('div');
 						div.innerHTML = res.data.result.result;
 						document.body.appendChild(div);
 						document.forms[0].submit();
+						
+					}else{
+						window.location.href = res.data.result.h5_url;
+					}
 
+	
 
 					},
 					fail: function(res) {
