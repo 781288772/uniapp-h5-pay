@@ -8,7 +8,7 @@
 			</view>
 			<view
 				style="display: flex;flex-direction: column;text-align: left;margin-left: 1rem;justify-content: space-between;height:4.9rem;">
-				<view style="font-size: 1rem;font-weight: 500;">{{title}}</view>
+				<view style="font-size: 1rem;font-weight: 500;">《{{title}}》</view>
 				<view style="color: #A6A5A5;font-size: 1.3rem">在线观影</view>
 				<view style="color: #FF6F4E;font-size: 1.3rem">￥{{price}}</view>
 			</view>
@@ -84,6 +84,7 @@
 			} = options;
 			// productId= '1319571973050785793'
 			this.productId = productId;
+			uni.setStorageSync('id',productId)
 			this.token = token
 			let _this = this;
 			uni.request({

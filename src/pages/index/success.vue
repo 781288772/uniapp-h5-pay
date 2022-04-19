@@ -7,10 +7,10 @@
 			</view>
 		<view class="media flex_st" style="align-items: center;">
 			<view>
-				<image src="../../static/ic_share_logo.png" mode="" style="width: 4.9rem;height: 4.9rem;"></image>
+				<image :src="cover" mode="" style="width: 4.9rem;height: 4.9rem;"></image>
 			</view>
 			<view style="display: flex;flex-direction: column;text-align: left;margin-left: 1rem;justify-content: space-between;height:4.9rem;">
-				<view style="font-size: 0.7rem;font-weight: 500;">《熊出没 · 重返地球》</view>
+				<view style="font-size: 0.7rem;font-weight: 500;">《{{title}}》</view>
 				<view style="color: #A6A5A5;font-size: 0.65rem">在线观影</view>
 				<view style="color: #FF6F4E;font-size: 1.3rem"></view>
 			</view>
@@ -26,7 +26,8 @@
 
 <script>
 	import config from '../../utils/config.js'
-	let apiUrl = config.api.baseUrl
+	let apiUrl = config.api.baseUrl;
+	let imgUrl = config.api.imageBaseUrl;
 	import {
 		pay,
 		aliPay
@@ -37,13 +38,58 @@
 				title: '支付宝支付',
 				src:'',
 				payType:'',
+				title: '',
+				cover: '',
 			}
 		},
 		onLoad(options) {
 			// console.log(this.$u.config.v);
 			console.log(options)
-			let {productId} = options;
-			this.productId = productId;
+			// let {productId} = options;
+			// this.productId = productId;
+			
+
+				let productId = uni.getStorageSync('id');
+				
+				let _this = this;
+				uni.request({
+					url: apiUrl + `/api/content/video/queryInfo?id=${productId}`,
+					method: 'GET',
+					header: {
+						'X-Access-Token': '',
+						'content-type': 'application/json',
+					},
+					success: function(res) {
+						console.log('请求封装接口成功', res)
+						if (res.data.code != 200) {
+							return uni.showToast({
+								title: res.data.message,
+								icon: 'none',
+							})
+						}
+						_this.title = res.data.result.name;
+						_this.cover =  imgUrl+res.data.result.coverHome;	
+				
+				
+				
+				
+					},
+					fail: function(res) {
+						console.log('请求接口失败', res)
+				
+					}
+				});
+				// queryInfo(productId).then(res=>{
+				// 	this.title = res.result.name;
+				// 	this.cover =  imgUrl+res.result.coverHome;	
+				// 	this.price = res.result.chargeAmount;
+				// })
+				
+				
+			
+
+			
+			
 			window.webkit.messageHandlers.HQSJbuySucess.postMessage(null);
 
 		},
