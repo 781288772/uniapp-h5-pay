@@ -64,6 +64,7 @@
 								icon: 'none',
 							})
 						}
+						window.webkit.messageHandlers.HQSJbuySucess.postMessage(null);
 						_this.title = res.data.result.name;
 						_this.cover =  imgUrl+res.data.result.coverHome;	
 				
@@ -87,7 +88,7 @@
 
 			
 			
-			window.webkit.messageHandlers.HQSJbuySucess.postMessage(null);
+			
 
 		},
 		methods: {
@@ -97,10 +98,14 @@
 				// 	icon:'none'
 				// })
 				 window.webkit.messageHandlers.HQSJback.postMessage(null);
-				  // window.location.href = "HQSJback://back"
+				 
 			},
 			navToWatch(){
-				 window.webkit.messageHandlers.HQSwatchNow.postMessage(null);
+				uni.showToast({
+					title:'立即观看',
+					icon:'none'
+				})
+				 window.webkit.messageHandlers.HQSJwatchNow.postMessage(null);
 			}
 			}
 			

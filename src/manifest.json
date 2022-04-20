@@ -78,7 +78,7 @@
             "https" : false
         },
         "router" : {
-            "base" : "/pay/"
+            "base" : "/success/"
         }
     }
 }
