@@ -98,10 +98,10 @@
 
 			},
 			navToWatch() {
-				uni.showToast({
-					title: '立即观看',
-					icon: 'none'
-				})
+				// uni.showToast({
+				// 	title: '立即观看',
+				// 	icon: 'none'
+				// })
 				window.webkit.messageHandlers.HQSwatchNow.postMessage(null);
 			}
 		}
