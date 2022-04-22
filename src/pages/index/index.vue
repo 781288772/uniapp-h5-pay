@@ -69,13 +69,26 @@
 				title: '',
 				cover: '',
 				price: 0.00,
-				token:'',
+				token: '',
+				top: 0,
 
 
 
 			}
 		},
+		onShow() {
+			// window.location.reload();
+			// console.log('onshow')
+		},
 		onLoad(options) {
+
+			uni.getSystemInfo({
+				success(e) {
+					console.log(e)
+					this.top = e.statusBarHeight;
+				}
+			})
+			// alert(this.top)
 			// console.log(this.$u.config.v);
 			console.log(options)
 			let {
@@ -84,7 +97,7 @@
 			} = options;
 			// productId= '1319571973050785793'
 			this.productId = productId;
-			uni.setStorageSync('id',productId)
+			uni.setStorageSync('id', productId)
 			this.token = token
 			let _this = this;
 			uni.request({
@@ -103,16 +116,16 @@
 						})
 					}
 					_this.title = res.data.result.name;
-					_this.cover =  imgUrl+res.data.result.coverHome;	
+					_this.cover = imgUrl + res.data.result.coverHome;
 					_this.price = res.data.result.chargeAmount;
-			
-	
-			
-			
+
+
+
+
 				},
 				fail: function(res) {
 					console.log('请求接口失败', res)
-			
+
 				}
 			});
 			// queryInfo(productId).then(res=>{
@@ -120,9 +133,9 @@
 			// 	this.cover =  imgUrl+res.result.coverHome;	
 			// 	this.price = res.result.chargeAmount;
 			// })
-			
-			
-		
+
+
+
 
 		},
 		methods: {
@@ -141,7 +154,7 @@
 					// 	title: '暂不支持',
 					// 	icon: 'none'
 					// })
-						this.handlePay('wechat');
+					this.handlePay('wechat');
 				} else {
 					console.log('支付宝支付')
 					this.handlePay('alipay');
@@ -177,18 +190,18 @@
 								icon: 'none',
 							})
 						}
-						
-					if(platform=='alipay'){
-						const div = document.createElement('div');
-						div.innerHTML = res.data.result.result;
-						document.body.appendChild(div);
-						document.forms[0].submit();
-						
-					}else{
-						window.location.href = res.data.result.h5_url;
-					}
 
-	
+						if (platform == 'alipay') {
+							const div = document.createElement('div');
+							div.innerHTML = res.data.result.result;
+							document.body.appendChild(div);
+							document.forms[0].submit();
+
+						} else {
+							window.location.href = res.data.result.h5_url;
+						}
+
+
 
 					},
 					fail: function(res) {
@@ -196,52 +209,33 @@
 
 					}
 				});
-				// aliPay().then(res=>{
-				// let {
-				// 	appId,
-				// 	nonceStr,
-				// 	paySign,
-				// 	signType,
-				// 	timeStamp
-				// } = res.data;
-				// uni.requestPayment({
-				// 	provider: 'wxpay',
-				// 	timeStamp: timeStamp,
-				// 	nonceStr: nonceStr,
-				// 	package: package1,
-				// 	signType: signType,
-				// 	paySign: paySign,
-				// 	success(res) {
-				// 		uni.navigateBack();
-				// 		uni.showToast({
-				// 			title: '支付成功',
-				// 			icon: 'success'
-				// 		})
-				// 		var pages = getCurrentPages();
-				// 		var curPage = pages[pages.length - 1];
-				// 		curPage.onLoad(_this.option);
-				// 	},
-				// 	fail(err) {
-				// 		uni.showToast({
-				// 			title: '支付失败',
-				// 			icon: 'none'
-				// 		})
-				// 		console.log(err, '失败')
-				// 	}
-				// })
-				// })
+
 			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
+	.top-bar{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		height: 44px;
+		background-color: #fff;
+		width: 100%;
+	
+		
+	}
 	.content {
 		background-color: #F4F4F4;
 		width: 100%;
 		height: 100%;
-		padding: 0.5rem 1rem;
+		padding-left: 1rem;
+		padding-right: 1rem;
+		padding-top: var(--status-bar-height);
 		box-sizing: border-box;
+
+		
 	}
 
 	.media {
@@ -249,6 +243,7 @@
 		background: #fff;
 		border-radius: 0.25rem;
 		height: 7rem;
+		margin-top: 0.5rem;
 		/* border: 1px solid red; */
 	}
 
