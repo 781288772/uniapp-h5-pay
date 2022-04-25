@@ -1,24 +1,29 @@
 <template>
 	<view class="content">
-		<u-navbar :custom-back="customBack" back-text="" title="支付成功"></u-navbar>
-		<view>
-			<image src="../../static/success.png" mode="" style="width: 4rem;height: 4rem;"></image>
+		<!-- <u-navbar :custom-back="customBack" back-text="" title="支付成功"></u-navbar> -->
+		<view class="bar">
+			<u-icon name="arrow-left" @click="customBack"></u-icon>
+			<view>影片</view>
+			<view></view>
+		</view>
+		<view class="icon">
+			<image src="../../static/success.png" mode="" style="width: 80px;height: 80px;"></image>
 			<view class="unlock">影片已解锁</view>
 		</view>
 		<view class="media flex_st" style="align-items: center;">
 			<view>
-				<image :src="cover" mode="" style="width: 4.9rem;height: 4.9rem;"></image>
+				<image :src="cover" mode="" style="width: 98px;height: 98px;"></image>
 			</view>
 			<view
-				style="display: flex;flex-direction: column;text-align: left;margin-left: 1rem;justify-content: space-between;height:4.9rem;">
-				<view style="font-size: 0.7rem;font-weight: 500;">《{{title}}》</view>
-				<view style="color: #A6A5A5;font-size: 0.65rem">在线观影</view>
-				<view style="color: #FF6F4E;font-size: 1.3rem"></view>
+				style="display: flex;flex-direction: column;text-align: left;margin-left: 20px;justify-content: space-between;height:98px;">
+				<view style="font-size: 14px;font-weight: 500;">《{{title}}》</view>
+				<view style="color: #A6A5A5;font-size: 13px">在线观影</view>
+				<view style="color: #FF6F4E;font-size: 26px"></view>
 			</view>
 
 		</view>
 
-		<view style="text-align: center;position: relative;margin-top: 1.4rem;" @click="navToWatch">
+		<view style="text-align: center;position: relative;margin-top: 28px;" @click="navToWatch">
 			<image src="../../static/btn_bg@2x.png" mode="widthFix"></image>
 			<view style="position: absolute;left: 50%;top: 50%;transform: translate(-50%,-65%);">立即观看</view>
 		</view>
@@ -110,14 +115,14 @@
 </script>
 <style lang="scss" scoped>
 	.unlock {
-		margin-top: 0.6rem;
-		margin-bottom: 2.3rem;
-		height: 1.1rem;
-		font-size: 0.8rem;
+		margin-top: 12px;
+		margin-bottom: 46px;
+		height: 22px;
+		font-size: 16px;
 		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 500;
 		color: #000000;
-		line-height: 1.1rem;
+		line-height: 22px;
 		text-align: center;
 	}
 
@@ -125,32 +130,57 @@
 		background-color: #F4F4F4;
 		width: 100%;
 		height: 100%;
-		padding: 0.5rem 1rem;
+		padding-left: 20px;
+		padding-right: 20px;
+		padding-top: calc(20px + constant(safe-area-inset-top));
+		padding-top: calc(20px + env(safe-area-inset-top));
 		box-sizing: border-box;
+
+		.bar {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			position: absolute;
+			// top: 44px;
+			top: constant(safe-area-inset-top);
+			/* iOS 11.0 */
+			top: env(safe-area-inset-top);
+			/* iOS 11.2 */
+			left: 0;
+			background-color: #fff;
+			width: 100%;
+			height: 44px;
+			box-sizing: border-box;
+			padding: 0 20px;
+		}
+
+		.icon {
+			margin-top: 20px;
+		}
 	}
 
 	.media {
-		padding: 0.5rem;
+		padding: 10px;
 		background: #fff;
-		border-radius: 0.25rem;
-		height: 7rem;
+		border-radius: 5px;
+		height: 140px;
 		/* border: 1px solid red; */
 	}
 
 	.payType {
-		margin-top: 0.5rem;
-		padding: 0.5rem;
+		margin-top: 10px;
+		padding: 10px;
 		background: #fff;
-		border-radius: 0.25rem;
-		height: 7.6rem;
+		border-radius: 5px;
+		height: 152px;
 
 	}
 
 	.title {
-		width: 3.2rem;
-		padding: 0.5rem 0;
-		height: 1.1rem;
-		font-size: 0.8rem;
+		width: 64px;
+		padding: 10px 0;
+		height: 22px;
+		font-size: 16px;
 		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 500;
 		color: #000000;

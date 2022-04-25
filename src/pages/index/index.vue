@@ -1,16 +1,21 @@
 <template>
 	<view class="content">
-		<u-navbar :custom-back="customBack" back-text="" title="购买影片"></u-navbar>
+		<!-- <u-navbar :custom-back="customBack" back-text="" title="购买影片"></u-navbar> -->
+		<view class="bar">
+			<u-icon name="arrow-left" @click="customBack"></u-icon>
+			<view>影片</view>
+			<view></view>
+		</view>
 		<view class="media flex_st" style="align-items: center;">
 			<view>
-				<image :src="cover||'../../static/ic_share_logo.png'" mode="" style="width: 4.9rem;height: 4.9rem;">
+				<image :src="cover||'../../static/ic_share_logo.png'" mode="" style="width: 98px;height: 98px;">
 				</image>
 			</view>
 			<view
-				style="display: flex;flex-direction: column;text-align: left;margin-left: 1rem;justify-content: space-between;height:4.9rem;">
-				<view style="font-size: 1rem;font-weight: 500;">《{{title}}》</view>
-				<view style="color: #A6A5A5;font-size: 1.3rem">在线观影</view>
-				<view style="color: #FF6F4E;font-size: 1.3rem">￥{{price}}</view>
+				style="display: flex;flex-direction: column;text-align: left;margin-left: 1rem;justify-content: space-between;height:98px;">
+				<view style="font-size: 20px;font-weight: 500;">《{{title}}》</view>
+				<view style="color: #A6A5A5;font-size: 26px">在线观影</view>
+				<view style="color: #FF6F4E;font-size: 26px">￥{{price}}</view>
 			</view>
 
 		</view>
@@ -18,34 +23,34 @@
 			<view class="title">
 				支付方式
 			</view>
-			<view class="flex_bt" @click="handleSelectPayType(0)" style="margin-top: 0.9em;">
+			<!-- 	<view class="flex_bt" @click="handleSelectPayType(0)" style="margin-top: 18px;">
 				<view class="flex_st">
-					<image src="../../static/wx.png" mode="" style="width: 1.4rem;height: 1.4rem;"></image>
-					<text style="margin-left: 0.5rem;font-size: 1rem;">微信</text>
+					<image src="../../static/wx.png" mode="" style="width: 28px;height: 28px;"></image>
+					<text style="margin-left: 10px;font-size: 20px;">微信</text>
 				</view>
 				<view>
-					<image src="../../static/selected.png" mode="" style="width: 0.8rem;height: 0.8rem;"
+					<image src="../../static/selected.png" mode="" style="width: 16px;height:16px;"
 						v-if="payType==0"></image>
 					<image src="../../static/unselected.png" mode="" style="width: 0.8rem;height: 0.8rem" v-else>
 					</image>
 				</view>
-			</view>
+			</view> -->
 			<!-- 支付宝 -->
-			<view class="flex_bt" style="margin-top: 0.9rem;" @click="handleSelectPayType(1)">
+			<view class="flex_bt" style="margin-top: 18px;" @click="handleSelectPayType(1)">
 				<view class="flex_st">
-					<image src="../../static/zfb.png" mode="" style="width: 1.4rem;height: 1.4rem;"></image>
-					<text style="margin-left: 0.5rem;font-size: 1rem;">支付宝</text>
+					<image src="../../static/zfb.png" mode="" style="width: 28px;height: 28px;"></image>
+					<text style="margin-left: 10px;font-size: 20px;">支付宝</text>
 				</view>
 				<view>
-					<image src="../../static/selected.png" mode="" style="width: 0.8rem;height:0.8rem"
-						v-if="payType==1"></image>
-					<image src="../../static/unselected.png" mode="" style="width: 0.8rem;height: 0.8rem" v-else>
+					<image src="../../static/selected.png" mode="" style="width: 16px;height:16px" v-if="payType==1">
+					</image>
+					<image src="../../static/unselected.png" mode="" style="width: 16px;height:16px" v-else>
 					</image>
 				</view>
 			</view>
 
 		</view>
-		<view style="text-align: center;position: relative;margin-top: 1.4rem;" @click="pay">
+		<view style="text-align: center;position: relative;margin-top: 28px;width: 100%;" @click="pay">
 			<image src="../../static/btn_bg@2x.png" mode="widthFix"></image>
 			<view style="position: absolute;left: 50%;top: 50%;transform: translate(-50%,-65%);">立即支付</view>
 		</view>
@@ -64,13 +69,15 @@
 	export default {
 		data() {
 			return {
-
-				payType: '',
+				//支付类型 0 微信 1 支付宝
+				payType: 1,
 				title: '',
 				cover: '',
 				price: 0.00,
 				token: '',
 				top: 0,
+				//当前版本号2.7不开放微信支付
+				ver: '',
 
 
 
@@ -81,7 +88,7 @@
 			// console.log('onshow')
 		},
 		onLoad(options) {
-
+			//企图获取bar高度
 			uni.getSystemInfo({
 				success(e) {
 					console.log(e)
@@ -93,10 +100,12 @@
 			console.log(options)
 			let {
 				productId,
-				token
+				token,
+				ver
 			} = options;
 			// productId= '1319571973050785793'
 			this.productId = productId;
+			this.ver = ver;
 			uni.setStorageSync('id', productId)
 			this.token = token
 			let _this = this;
@@ -154,7 +163,11 @@
 					// 	title: '暂不支持',
 					// 	icon: 'none'
 					// })
-					this.handlePay('wechat');
+					if (this.ver != '2.7') {
+						this.handlePay('wechat');
+					} else {
+						console.log('当前版本不支持微信支付')
+					}
 				} else {
 					console.log('支付宝支付')
 					this.handlePay('alipay');
@@ -216,51 +229,71 @@
 </script>
 
 <style lang="scss" scoped>
-	.top-bar{
+	.top-bar {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 		height: 44px;
 		background-color: #fff;
 		width: 100%;
-	
-		
+
+
 	}
+
 	.content {
 		background-color: #F4F4F4;
 		width: 100%;
 		height: 100%;
-		padding-left: 1rem;
-		padding-right: 1rem;
-		padding-top: var(--status-bar-height);
+		padding-left: 20px;
+		padding-right: 20px;
+		padding-top: calc(20px + constant(safe-area-inset-top));
+		padding-top: calc(20px + env(safe-area-inset-top));
 		box-sizing: border-box;
 
-		
+		.bar {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			position: absolute;
+			// top: 44px;
+			top: constant(safe-area-inset-top);
+			/* iOS 11.0 */
+			top: env(safe-area-inset-top);
+			/* iOS 11.2 */
+			left: 0;
+			background-color: #fff;
+			width: 100%;
+			height: 44px;
+			box-sizing: border-box;
+			padding: 0 20px;
+		}
+
+
 	}
 
 	.media {
-		padding: 0.5rem;
+		padding: 10px;
 		background: #fff;
-		border-radius: 0.25rem;
-		height: 7rem;
-		margin-top: 0.5rem;
+		border-radius: 5px;
+		height: 140px;
+		margin-top: 10px;
 		/* border: 1px solid red; */
 	}
 
 	.payType {
-		margin-top: 0.5rem;
-		padding: 0.5rem;
+		margin-top: 10px;
+		padding: 10px;
 		background: #fff;
-		border-radius: 0.25rem;
-		height: 7.6rem;
+		border-radius: 5px;
+		height: 152px;
 
 	}
 
 	.title {
 		// width: 3.2rem;
-		padding: 0.5rem 0;
+		padding: 10px 0;
 		// height: 1.1rem;
-		font-size: 0.8rem;
+		font-size: 16px;
 		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 500;
 		color: #000000;
