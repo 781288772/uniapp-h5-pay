@@ -33,7 +33,7 @@
 						v-if="payType==0"></image>
 					<image src="../../static/unselected.png" mode="" style="width: 16px;height: 16px" v-else>
 					</image>
-				</view>
+				</view>W
 			</view> -->
 			<!-- 支付宝 -->
 			<view class="flex_bt" style="margin-top: 18px;" @click="handleSelectPayType(1)">

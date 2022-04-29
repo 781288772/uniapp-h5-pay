@@ -1,19 +1,19 @@
 # inquistive-h5
 
-## Project setup
+## 安装依赖
 ```
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+### 运行项目--H5端
 ```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
+yarn dev:h5
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### 项目打包
+```
+yarn build:h5
+```
+
+### 注意：打包支付页面、支付成功页面时需要修改pages.json；并且需要配置mainfest.json中H5配置运行基础路径，如打包支付页面基础路径为：/pay/ 
+
