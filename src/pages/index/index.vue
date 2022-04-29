@@ -23,7 +23,7 @@
 			<view class="title">
 				支付方式
 			</view>
-				<view class="flex_bt" @click="handleSelectPayType(0)" style="margin-top: 18px;">
+<!-- 				<view class="flex_bt" @click="handleSelectPayType(0)" style="margin-top: 18px;">
 				<view class="flex_st">
 					<image src="../../static/wx.png" mode="" style="width: 28px;height: 28px;"></image>
 					<text style="margin-left: 10px;font-size: 20px;">微信</text>
@@ -34,7 +34,7 @@
 					<image src="../../static/unselected.png" mode="" style="width: 16px;height: 16px" v-else>
 					</image>
 				</view>
-			</view>
+			</view> -->
 			<!-- 支付宝 -->
 			<view class="flex_bt" style="margin-top: 18px;" @click="handleSelectPayType(1)">
 				<view class="flex_st">
